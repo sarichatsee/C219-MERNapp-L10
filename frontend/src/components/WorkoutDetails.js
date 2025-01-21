@@ -1,6 +1,6 @@
 import { useWorkoutContext } from "../hooks/useWorkoutContext";
-// date fns
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
+// date-fns
+import { formatDistanceToNow } from "date-fns";
 
 function WorkoutDetails({ workout }) {
   const { dispatch } = useWorkoutContext();
@@ -18,6 +18,7 @@ function WorkoutDetails({ workout }) {
       dispatch({ type: "DELETE_WORKOUT", payload: json });
     }
   };
+
   return (
     <div className="workout-details">
       <h4>{workout.title}</h4>
