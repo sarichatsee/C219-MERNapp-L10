@@ -1,46 +1,36 @@
-// useEffect(() => {
-//     const fetchWorkouts = async () => {
-//         const response = await fetch(
-//             `${process.env.REACT_APP_API_URL}/api/workouts`
-//         )
-//     }
-// })
+import { useEffect } from "react"
+import { useWorkoutsContext } from "../hooks/useWorkoutsContext"
 
-import { useEffect } from "react";
-import WorkoutDetails from "../components/WorkoutDetails";
-import WorkoutForm from "../components/WorkoutForm";
-import { useWorkoutContext } from "../hooks/useWorkoutContext.js";
+// components
+import WorkoutDetails from "../components/WorkoutDetails"
+import WorkoutForm from "../components/WorkoutForm"
 
-function Home() {
-  // const [workouts, setWorkouts] = useState(null); // local state
-  const { workouts, dispatch } = useWorkoutContext(); // global context state
+const Home = () => {
+  const { workouts, dispatch } = useWorkoutsContext()
 
   useEffect(() => {
     const fetchWorkouts = async () => {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/workouts`
-      );
-      const json = await response.json(); // parse JSON response body as JS array of objects
-      if (response.ok) {
-        // setWorkouts(workouts);
-        dispatch({ type: "SET_WORKOUTS", payload: json });
-      }
-    };
+      const response = await fetch('/api/workouts')
+      const json = await response.json()
 
-    fetchWorkouts();
-  }, [dispatch]); // external function must be in dependency array
+      if (response.ok) {
+        dispatch({type: 'SET_WORKOUTS', payload: json})
+      }
+    }
+
+    fetchWorkouts()
+  }, [dispatch])
 
   return (
     <div className="home">
       <div className="workouts">
-        {workouts &&
-          workouts.map((workout) => (
-            <WorkoutDetails key={workout._id} workout={workout} />
-          ))}
+        {workouts && workouts.map(workout => (
+          <WorkoutDetails workout={workout} key={workout._id} />
+        ))}
       </div>
       <WorkoutForm />
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home
